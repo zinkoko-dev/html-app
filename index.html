@@ -30,6 +30,7 @@
         </tbody>
     </table>
 
+    <!--#region CDN-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -42,6 +43,9 @@
     <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.6/dist/notiflix-aio-3.2.6.min.js"
         integrity="sha256-pXMqYvjzxYjuQ3+Iz0Zpw3Tk3BAoet8dOsODol/iqTI=" crossorigin="anonymous"></script>
 
+    <!--#endregion CDN-->
+
+    <!--#region JavaScript-->
     <script>
         let updateId = '';
         loadTable();
@@ -49,6 +53,8 @@
         Notiflix.Notify.init({
             position: 'center-top',
             fontSize: '16px',
+            svgSize: '3px',
+            zindex: 200,
             borderRadius: '10px',
             timeout: 2000,
             warning: {
@@ -57,13 +63,16 @@
             }
         });
 
-        $('#btnSave').click(function () {
+        $('#btnSave').click(function (e) {
+            e.preventDefault();
 
             let inputName = $('#name').val();
             if (inputName === null || inputName === undefined || inputName === '' || inputName.includes(' ')) {
                 Notiflix.Notify.warning('please enter name');
                 return;
             }
+
+            Notiflix.Loading.dots();
 
             let list = getStudents();
             const stuObj = {
@@ -77,7 +86,13 @@
 
             $('#name').val('');
             $('#name').focus();
-            loadTable();
+
+            setTimeout(() => {
+                Notiflix.Loading.remove();
+                Notiflix.Notify.success('Saving Successful!!');
+                loadTable();
+            }, 2000);
+
         });
 
         $('#btnUpdate').click(function () {
@@ -259,6 +274,7 @@
         });
 
     </script>
+    <!--#endregion JavaScript-->
 
 </body>
 
